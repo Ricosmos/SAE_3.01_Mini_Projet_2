@@ -1,3 +1,5 @@
+package Splendor.metier;
+
 import java.util.HashMap;
 
 public class Joueur 

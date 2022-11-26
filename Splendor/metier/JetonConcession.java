@@ -1,3 +1,5 @@
+package Splendor.metier;
+
 import java.awt.Color;
 
 public class JetonConcession 
