@@ -4,10 +4,12 @@ import java.awt.Color;
 
 public class JetonConcession 
 {
+	private String nom;
 	private Color couleur;
 
-	public JetonConcession(Color couleur) 
+	public JetonConcession(String nom, Color couleur) 
 	{
+		this.nom = nom;
 		this.couleur = couleur;
 	}
 
@@ -17,7 +19,8 @@ public class JetonConcession
 	public String toString() 
 	{
 		return "{" +
-			" couleur='" + getCouleur() + "'" +
+			" nom='" + getNom() + "'" +
+			", couleur='" + getCouleur() + "'" +
 			"}";
 	}
 }
