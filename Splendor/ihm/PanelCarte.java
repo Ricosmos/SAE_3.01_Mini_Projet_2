@@ -17,8 +17,8 @@ public class PanelCarte extends JPanel
 		this.ctrl = ctrl;
 		this.tabTerritoires = this.ctrl.getTerritoire();
 		
-		this.setPreferredSize(new Dimension(1500, 1500));
-		this.setBackground(Color.BLACK);
+		this.setPreferredSize(new Dimension(2000, 1500));
+		this.setBackground(Color.WHITE);
 	}
 
 	
@@ -34,11 +34,14 @@ public class PanelCarte extends JPanel
 
 		for (int i = 0; i < this.tabTerritoires.size(); i++)
 		{
-			g2D.setColor(this.tabTerritoires.get(i).getCouleur());
 			for (int j = 0; j < this.tabTerritoires.get(i).getTabPoint().size(); j++)
 			{
 				Point point = this.tabTerritoires.get(i).getTabPoint().get(j);
-				g2D.fillPolygon(this.createHexagon((int)point.getX(), (int)point.getY()));
+				Polygon hexagone = this.createHexagon((int)point.getX(), (int)point.getY());
+				g2D.setColor(this.tabTerritoires.get(i).getCouleur());
+				g2D.fillPolygon(hexagone);
+				g2D.setColor(Color.BLACK);
+				g2D.drawPolygon(hexagone);
 			}
 		}
 
@@ -46,17 +49,19 @@ public class PanelCarte extends JPanel
 	
 	private Polygon createHexagon(int x, int y) 
 	{
-		Polygon polygon = new Polygon();
-		final int RADIUS = 25;
+		final int RADIUS = 30;
+		final int RATIO_X = 30;
+		final int RATIO_Y = 45;
 
-		for (int i = 0; i < 6; i++) 
-		{
-			int xval = (int) (x * RADIUS + RADIUS * Math.sin(i * 2 * Math.PI / 6D));
-			int yval = (int) (y * RADIUS + RADIUS * Math.cos(i * 2 * Math.PI / 6D));
-			
-			polygon.addPoint(xval, yval);
-		}
-		
+		Polygon polygon = new Polygon();
+
+		polygon.addPoint(x * RATIO_X - RADIUS  , y * RATIO_Y - RADIUS/2);
+		polygon.addPoint(x * RATIO_X           , y * RATIO_Y - RADIUS  );
+		polygon.addPoint(x * RATIO_X + RADIUS  , y * RATIO_Y - RADIUS/2);
+		polygon.addPoint(x * RATIO_X + RADIUS  , y * RATIO_Y + RADIUS/2);
+		polygon.addPoint(x * RATIO_X           , y * RATIO_Y + RADIUS  );
+		polygon.addPoint(x * RATIO_X - RADIUS  , y * RATIO_Y + RADIUS/2);
+
 		return polygon;
 	}
 }
