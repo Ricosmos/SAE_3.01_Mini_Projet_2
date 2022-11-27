@@ -12,13 +12,13 @@ public class Metier
 {
 	private Joueur joueur1, joueur2;
 	private ArrayList<Territoire> tabTerritoires;
-	private HashMap<JetonConcession, Integer> tabJetons;
+	private HashMap<String, Integer> tabJetons;
 
 
 	public Metier(String nomJoueur1, String nomJoueur2) 
 	{
-		this.joueur1 = new Joueur(nomJoueur1);
-		this.joueur2 = new Joueur(nomJoueur2);
+		this.joueur1 = new Joueur(nomJoueur1, Color.GREEN);
+		this.joueur2 = new Joueur(nomJoueur2, Color.MAGENTA);
 		this.tabTerritoires = this.lireCoordonees("Splendor/metier/coordonnees.txt");
 		this.tabJetons = this.creerJeton();
 	}
@@ -26,7 +26,7 @@ public class Metier
 	public Joueur getJoueur1() {return this.joueur1;}
 	public Joueur getJoueur2() {return this.joueur2;}
 	public ArrayList<Territoire> getTabTerritoires() {return this.tabTerritoires;}
-	public HashMap<JetonConcession,Integer> getTabJetons() {return this.tabJetons;}
+	public HashMap<String,Integer> getTabJetons() {return this.tabJetons;}
 
 	/*
 	 * Fonction permettant de lire le fichier fournis en argument et d'en extraire tout les territoires
@@ -67,19 +67,19 @@ public class Metier
 	 * Creer tout les jetons de concessions selon les règles du Splendor
 	 * @return Une HashMap avec tout les types de concessions et leur quantités
 	 */
-	private HashMap<JetonConcession, Integer> creerJeton()
+	private HashMap<String, Integer> creerJeton()
 	{
-		HashMap<JetonConcession, Integer> hmJetonConcession = new HashMap<JetonConcession, Integer>();
+		HashMap<String, Integer> hmJetonConcession = new HashMap<String, Integer>();
 
-		hmJetonConcession.put(new JetonConcession("Blanc", correspondanceCouleur("Blanc")), 16);
-		hmJetonConcession.put(new JetonConcession("Bleu", correspondanceCouleur("Bleu")), 16);
-		hmJetonConcession.put(new JetonConcession("Vert", correspondanceCouleur("Vert")), 16);
-		hmJetonConcession.put(new JetonConcession("Jaune", correspondanceCouleur("Jaune")), 16);
-		hmJetonConcession.put(new JetonConcession("Orange", correspondanceCouleur("Orange")), 16);
-		hmJetonConcession.put(new JetonConcession("Rose", correspondanceCouleur("Rose")), 16);
-		hmJetonConcession.put(new JetonConcession("Rouge", correspondanceCouleur("Rouge")), 16);
-		hmJetonConcession.put(new JetonConcession("Noir", correspondanceCouleur("Noir")), 16);
-		hmJetonConcession.put(new JetonConcession("Multi", correspondanceCouleur("Multi")), 10);
+		hmJetonConcession.put("Blanc" , 16);
+		hmJetonConcession.put("Bleu"  , 16);
+		hmJetonConcession.put("Vert"  , 16);
+		hmJetonConcession.put("Jaune" , 16);
+		hmJetonConcession.put("Orange", 16);
+		hmJetonConcession.put("Rose"  , 16);
+		hmJetonConcession.put("Rouge" , 16);
+		hmJetonConcession.put("Noir"  , 16);
+		hmJetonConcession.put("Multi" , 10);
 
 		return hmJetonConcession;
 	}
@@ -103,5 +103,22 @@ public class Metier
 		hmCouleur.put("MULTI", new Color(65, 0, 204)); // en attendant
 
 		return hmCouleur.get(couleurNom.replaceAll("\\s","").toUpperCase()); // retire les espaces blancs
+	}
+
+	public Joueur getCurrentJoueur()
+	{
+		if (this.joueur1.getTours())
+			return this.joueur1;
+		else
+			return this.joueur2;
+	}
+	
+	private boolean possessionTerritoire(Joueur joueur, Territoire territoire) 
+	{
+		if (joueur.getTabJeton().get(territoire.getCouleur()) < Integer.parseInt(territoire.getTaille().replaceAll("\\D", "")))
+			return false;
+
+		territoire.possederTerritoire(joueur);
+		return true;
 	}
 }
