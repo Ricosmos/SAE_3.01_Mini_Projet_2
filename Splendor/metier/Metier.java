@@ -23,6 +23,11 @@ public class Metier
 		this.tabJetons = this.creerJeton();
 	}
 
+	public Joueur getJoueur1() {return this.joueur1;}
+	public Joueur getJoueur2() {return this.joueur2;}
+	public ArrayList<Territoire> getTabTerritoires() {return this.tabTerritoires;}
+	public HashMap<JetonConcession,Integer> getTabJetons() {return this.tabJetons;}
+
 	/*
 	 * Fonction permettant de lire le fichier fournis en argument et d'en extraire tout les territoires
 	 * @param Le chemin menant vers le fichier .txt qui contient les donnees de tout les territoires
@@ -40,13 +45,13 @@ public class Metier
 			while ( sc.hasNextLine() )
 			{
 				String[] ligneDec = sc.nextLine().split("\\|"); // Decoupe la ligne pour avoir la couleur, taille, coordonnees des parcelles
-				String[] pointDec = ligneDec[2].split(":"); // Decoupe les coordonnes pour avoir des tuples ( x, y)
+				String[] pointDec = ligneDec[2].split(":"); // Decoupe les coordonnes pour avoir des tuples ( y, x)
 				ArrayList<Point> tabPoint = new ArrayList<Point>();
 
 				for (int cpt = 0; cpt < pointDec.length; cpt++)
 				{
-					tabPoint.add(new Point(Integer.parseInt(pointDec[cpt].substring(0, 2).replaceAll("\\s","")),  // partie x du tuple et on retire les espaces
-											Integer.parseInt(pointDec[cpt].substring(3, 5).replaceAll("\\s","")))); // partie y du tuple et on retire les espaces
+					tabPoint.add(new Point(Integer.parseInt(pointDec[cpt].substring(3, 5).replaceAll("\\s","")),  // partie y du tuple et on retire les espaces
+											Integer.parseInt(pointDec[cpt].substring(0, 2).replaceAll("\\s","")))); // partie x du tuple et on retire les espaces
 				}
 
 				tabTerritoire.add(new Territoire(this.correspondanceCouleur(ligneDec[0]), ligneDec[1], tabPoint));
@@ -98,10 +103,5 @@ public class Metier
 		hmCouleur.put("MULTI", new Color(65, 0, 204)); // en attendant
 
 		return hmCouleur.get(couleurNom.replaceAll("\\s","").toUpperCase()); // retire les espaces blancs
-	}
-
-	public static void main(String[] args) 
-	{
-		new Metier("j1", "j2");
 	}
 }
