@@ -14,6 +14,7 @@ public class JetonConcession
 	}
 
 	public Color getCouleur() {return this.couleur;}
+	public String getNom() {return this.nom;}
 
 	@Override
 	public String toString() 
