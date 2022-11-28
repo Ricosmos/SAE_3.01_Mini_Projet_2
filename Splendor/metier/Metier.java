@@ -17,7 +17,7 @@ public class Metier
 
 	public Metier(String nomJoueur1, String nomJoueur2) 
 	{
-		this.joueur1 = new Joueur(nomJoueur1, Color.GREEN);
+		this.joueur1 = new Joueur(nomJoueur1, new Color(3, 167, 255));
 		this.joueur2 = new Joueur(nomJoueur2, Color.MAGENTA);
 		this.tabTerritoires = this.lireCoordonees("Splendor/metier/coordonnees.txt");
 		this.tabJetons = this.creerJeton();
