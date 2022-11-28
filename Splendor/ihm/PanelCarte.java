@@ -40,6 +40,7 @@ public class PanelCarte extends JPanel
 			for (int j = 0; j < this.tabTerritoires.get(i).getTabPoint().size(); j++)
 			{
 				g2D.setStroke(new BasicStroke((float)(2)));
+				
 				Point point = this.tabTerritoires.get(i).getTabPoint().get(j);
 				Polygon hexagone = this.createHexagon((int)point.getX(), (int)point.getY());
 				g2D.setColor(this.tabTerritoires.get(i).getCouleur());
@@ -50,13 +51,13 @@ public class PanelCarte extends JPanel
 				if (this.tabTerritoires.get(i).getPosseder() != null)
 				{
 
-					g2D.setColor(Color.BLACK);
+					g2D.setColor(Color.BLACK); // Croix noir
 					g2D.setStroke(new BasicStroke((float)(8)));
 					g2D.drawLine((int)point.getX() * RATIO_X - 10, (int)point.getY() * RATIO_Y - 10, (int)point.getX() * RATIO_X + 10, (int)point.getY() * RATIO_Y + 10);
 					g2D.drawLine((int)point.getX() * RATIO_X - 10, (int)point.getY() * RATIO_Y + 10, (int)point.getX() * RATIO_X + 10, (int)point.getY() * RATIO_Y - 10);
 
 
-					g2D.setColor(this.tabTerritoires.get(i).getPosseder().getCouleur());
+					g2D.setColor(this.tabTerritoires.get(i).getPosseder().getCouleur()); // Croix de la couleur du joueur possedant le territoire
 					g2D.setStroke(new BasicStroke((float)(5)));
 					g2D.drawLine((int)point.getX() * RATIO_X - 10, (int)point.getY() * RATIO_Y - 10, (int)point.getX() * RATIO_X + 10, (int)point.getY() * RATIO_Y + 10);
 					g2D.drawLine((int)point.getX() * RATIO_X - 10, (int)point.getY() * RATIO_Y + 10, (int)point.getX() * RATIO_X + 10, (int)point.getY() * RATIO_Y - 10);

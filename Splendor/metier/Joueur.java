@@ -18,7 +18,7 @@ public class Joueur
 		this.couleur = couleur;
 		this.tours = false;
 		this.marqPosse = 40;
-		this.tabJeton = new HashMap<String, Integer>();
+		this.tabJeton = this.creerJeton();
 		this.pv = 0;
 	}
 
@@ -32,6 +32,27 @@ public class Joueur
 
 	public void addPv(int pv) {this.pv += pv;}
 	public void changerTours() {this.tours = !this.tours;}
+
+	/*
+	 * Prepare le joueur a recevoir les jetons concessions
+	 * @return Une HashMap avec tout les types de concessions
+	 */
+	private HashMap<String, Integer> creerJeton()
+	{
+		HashMap<String, Integer> hmJetonConcession = new HashMap<String, Integer>();
+
+		hmJetonConcession.put("Blanc" , 0);
+		hmJetonConcession.put("Bleu"  , 0);
+		hmJetonConcession.put("Vert"  , 0);
+		hmJetonConcession.put("Jaune" , 0);
+		hmJetonConcession.put("Orange", 0);
+		hmJetonConcession.put("Rose"  , 0);
+		hmJetonConcession.put("Rouge" , 0);
+		hmJetonConcession.put("Noir"  , 0);
+		hmJetonConcession.put("Multi" , 0);
+
+		return hmJetonConcession;
+	}
 
 	@Override
 	public String toString() {
