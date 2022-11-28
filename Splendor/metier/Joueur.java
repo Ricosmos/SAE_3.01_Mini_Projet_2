@@ -27,13 +27,28 @@ public class Joueur
 	public boolean getTours() {return this.tours;}
 	public boolean isTours() {return this.tours;}
 	public int getMarqPosse() {return this.marqPosse;}
-	public HashMap<String, Integer> getTabJeton() {return this.tabJetons;}
 	public int getPv() {return this.pv;}
 
 	public void addPv(int pv) {this.pv += pv;}
 	public void changerTours() {this.tours = !this.tours;}
-	public void addJeton(String couleurJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) + 1);}
-	public void removeJeton(String couleurJeton, int nombreJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) - nombreJeton);}
+
+	// Methode get qui renvoie le tableau de jetons (non modifiable)
+	public HashMap<String, Integer> getTabJeton() {
+		HashMap<String, Integer> copieTabJeton = new HashMap<String, Integer>();
+		this.tabJetons.forEach((k, v) -> copieTabJeton.put(k, v));
+		return copieTabJeton;
+	}
+
+	// Methode set qui modifie le tableau de jetons pour ajouter un jeton
+	public void incrementerJeton (String couleur, int nbJeton) {
+		this.tabJetons.put(couleur, this.tabJetons.get(couleur) + 1);
+	}
+
+	// Methode set qui modifie le tableau de jetons pour retirer un jeton
+	public void decrementerJeton (String couleur, int nbJeton) {
+		this.tabJetons.put(couleur, this.tabJetons.get(couleur) - 1);
+	}
+
 
 	/*
 	 * Prepare le joueur a recevoir les jetons concessions

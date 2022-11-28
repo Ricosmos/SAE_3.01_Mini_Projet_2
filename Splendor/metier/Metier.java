@@ -173,4 +173,85 @@ public class Metier
 		territoire.possederTerritoire(joueur);
 		return true;
 	}
+
+	public void prendreJeton(Joueur actu) {
+
+		//Genere les 5 jetons aleatoirement
+		ArrayList<String> jetons = new ArrayList<String>();
+		for(int i = 0; i < 5; i++) {
+			int random = (int)(Math.random() * 9);
+			jetons.add(this.tabJetons.keySet().toArray()[random].toString());
+		}
+		jetons.add("Pioche");
+
+		//J'essaie de faire une boulce qui s'arrete quand il a pris 2 jetons (mais il faut toute les eventualites avec la pioche)
+		//en dessous, la version simpliste qui ne prend pas en compte la pioche
+
+		/*int nbJetonRecup = 0;
+		while(nbJetonRecup < 2) {
+			//Affiche les jetons
+			System.out.println("Jetons :");
+			for(int i = 0; i < jetons.size()-1; i++) {
+				System.out.println( "| " + jetons.get(i) + " |");
+			}
+
+			//Choix du joueur
+			System.out.println("Choisissez un jeton :");
+			Scanner sc = new Scanner(System.in);
+
+			int choix = sc.nextInt();
+			while(choix < 1 || choix > 6) {
+				System.out.println("Choix invalide, veuillez recommencer :");
+				choix = sc.nextInt();
+			}
+
+			//Si le joueur a choisi la pioche
+			String couleur = "";
+			if(choix == 6) {
+				ArrayList<String> pioche = new ArrayList<String>();
+				for(int i = 0; i < 2-nbJetonRecup; i++) {
+					int random = (int)(Math.random() * 9);
+					pioche.add(this.tabJetons.keySet().toArray()[random].toString());
+				}
+				System.out.println("Jetons piochés :");
+				for(int i = 0; i < pioche.size(); i++) {
+					System.out.println( "| " + pioche.get(i) + " |");
+				}
+				System.out.println("Choisissez un jeton :");
+				choix = sc.nextInt();
+				switch(nbJetonRecup) {
+					case 0
+				}
+			else {
+				couleur = jetons.get(choix - 1);
+				jetons.remove(choix - 1);
+				System.out.println("Vous avez choisi le jeton " + couleur);
+			}
+		}*/
+
+		//Affiche les jetons
+		System.out.println("Jetons :");
+		for(int i = 0; i < jetons.size()-1; i++) {
+			System.out.println( "| " + jetons.get(i) + " |");
+		}
+
+		//Choix du joueur
+		System.out.println("Choisissez un jeton :");
+		Scanner sc = new Scanner(System.in);
+
+		int choix = sc.nextInt();
+		while(choix < 1 || choix > 5) {
+			System.out.println("Choix invalide, veuillez recommencer :");
+			choix = sc.nextInt();
+		}
+
+		String couleur = jetons.get(choix - 1);
+		jetons.remove(choix - 1);
+		System.out.println("Vous avez choisi le jeton " + couleur);
+		
+
+
+		//Ajout du jeton au joueur
+		actu.incrementerJeton(couleur, 1);
+	}
 }
