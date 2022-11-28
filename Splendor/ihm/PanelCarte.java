@@ -53,18 +53,14 @@ public class PanelCarte extends JPanel
 
 					g2D.setColor(Color.BLACK); // Croix noir
 					g2D.setStroke(new BasicStroke((float)(8)));
-					g2D.drawLine((int)point.getX() * RATIO_X - 10, (int)point.getY() * RATIO_Y - 10, (int)point.getX() * RATIO_X + 10, (int)point.getY() * RATIO_Y + 10);
-					g2D.drawLine((int)point.getX() * RATIO_X - 10, (int)point.getY() * RATIO_Y + 10, (int)point.getX() * RATIO_X + 10, (int)point.getY() * RATIO_Y - 10);
-
+					this.dessinerCroix(g2D, (int)point.getX(), (int)point.getY());
 
 					g2D.setColor(this.tabTerritoires.get(i).getPosseder().getCouleur()); // Croix de la couleur du joueur possedant le territoire
 					g2D.setStroke(new BasicStroke((float)(5)));
-					g2D.drawLine((int)point.getX() * RATIO_X - 10, (int)point.getY() * RATIO_Y - 10, (int)point.getX() * RATIO_X + 10, (int)point.getY() * RATIO_Y + 10);
-					g2D.drawLine((int)point.getX() * RATIO_X - 10, (int)point.getY() * RATIO_Y + 10, (int)point.getX() * RATIO_X + 10, (int)point.getY() * RATIO_Y - 10);
+					this.dessinerCroix(g2D, (int)point.getX(), (int)point.getY());
 				}
 			}
 		}
-
 	}
 	
 	private Polygon createHexagon(int x, int y) 
@@ -83,5 +79,16 @@ public class PanelCarte extends JPanel
 		polygon.addPoint(x * RATIO_X - RADIUS  , y * RATIO_Y + RADIUS/2);
 
 		return polygon;
+	}
+
+	private void dessinerCroix(Graphics2D g2D, int x, int y)
+	{
+		final int RATIO_X = 30;
+		final int RATIO_Y = 45;
+
+		g2D.drawLine(x * RATIO_X - 10, y * RATIO_Y - 10, 
+						x * RATIO_X + 10, y * RATIO_Y + 10);
+		g2D.drawLine(x * RATIO_X - 10, y * RATIO_Y + 10, 
+						x * RATIO_X + 10, y * RATIO_Y - 10);
 	}
 }
