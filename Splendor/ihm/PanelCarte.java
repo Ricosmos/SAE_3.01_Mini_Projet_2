@@ -29,9 +29,6 @@ public class PanelCarte extends JPanel
 
 	public void paint(Graphics g)
 	{
-		final int RATIO_X = 30;
-		final int RATIO_Y = 45;
-
 		super.paint(g);
 		Graphics2D g2D = (Graphics2D)(g);
 

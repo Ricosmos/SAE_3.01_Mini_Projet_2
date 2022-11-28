@@ -23,15 +23,13 @@ public class Metier
 		this.tabTerritoires = this.lireCoordonees("Splendor/metier/coordonnees.txt");
 		this.tabJetons = this.creerJeton();
 		this.tabCartesObjectif = this.creerCartesObjectif();
-		for (Objectif objectif : tabCartesObjectif) {
-			System.out.println(objectif);
-		}
 	}
 
 	public Joueur getJoueur1() {return this.joueur1;}
 	public Joueur getJoueur2() {return this.joueur2;}
 	public ArrayList<Territoire> getTabTerritoires() {return this.tabTerritoires;}
 	public HashMap<String,Integer> getTabJetons() {return this.tabJetons;}
+	public ArrayList<Objectif> getTabCartesObjectif() {return this.tabCartesObjectif;}
 
 	public void addJeton(String couleurJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) + 1);}
 	public void removeJeton(String couleurJeton, int nombreJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) - nombreJeton);}
@@ -157,6 +155,13 @@ public class Metier
 		return hmCouleur.get(couleurNom.replaceAll("\\s","").toUpperCase()); // retire les espaces blancs
 	}
 
+	private Objectif[] piocherObjectif()
+	{
+		Objectif[] tabObjectif = new Objectif[2];
+		
+		return null;
+	}
+
 	public Joueur getCurrentJoueur()
 	{
 		if (this.joueur1.getTours())
@@ -167,7 +172,7 @@ public class Metier
 	
 	private boolean possessionTerritoire(Joueur joueur, Territoire territoire) 
 	{
-		if (joueur.getTabJeton().get(territoire.getCouleur()) < Integer.parseInt(territoire.getTaille().replaceAll("\\D", "")))
+		if (joueur.getTabJetons().get(territoire.getCouleur()) < Integer.parseInt(territoire.getTaille().replaceAll("\\D", "")))
 			return false;
 
 		territoire.possederTerritoire(joueur);

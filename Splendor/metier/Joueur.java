@@ -1,5 +1,6 @@
 package Splendor.metier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Color;
 
@@ -10,6 +11,7 @@ public class Joueur
 	private boolean tours;
 	private int marqPosse;
 	private HashMap<String, Integer> tabJetons;
+	private ArrayList<Objectif> tabCartesObjectif;
 	private int pv;
 
 	public Joueur(String nomJoueur, Color couleur)
@@ -19,6 +21,7 @@ public class Joueur
 		this.tours = false;
 		this.marqPosse = 40;
 		this.tabJetons = this.creerJeton();
+		this.tabCartesObjectif = new ArrayList<Objectif>();
 		this.pv = 0;
 	}
 
@@ -27,6 +30,8 @@ public class Joueur
 	public boolean getTours() {return this.tours;}
 	public boolean isTours() {return this.tours;}
 	public int getMarqPosse() {return this.marqPosse;}
+	public HashMap<String, Integer> getTabJetons() {return this.tabJetons;}
+	public ArrayList<Objectif> getTabCartesObjectif() {return this.tabCartesObjectif;}
 	public int getPv() {return this.pv;}
 
 	public void addPv(int pv) {this.pv += pv;}
@@ -72,14 +77,17 @@ public class Joueur
 	}
 
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		return "{" +
 			" nomJoueur='" + getNomJoueur() + "'" +
 			", couleur='" + getCouleur() + "'" +
-			", tours='" + getTours() + "'" +
+			", tours='" + isTours() + "'" +
 			", marqPosse='" + getMarqPosse() + "'" +
-			", tabJeton='" + getTabJeton() + "'" +
+			", tabJetons='" + getTabJetons() + "'" +
+			", tabCartesObjectif='" + getTabCartesObjectif() + "'" +
 			", pv='" + getPv() + "'" +
 			"}";
 	}
+
 }

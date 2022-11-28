@@ -62,6 +62,15 @@ public class Objectif
 		}
 	}
 
+	public String getObjectifCarte() {return this.objectifCarte;}
+	public int getType() {return this.type;}
+	public Integer getNbTerritoire() {return this.nbTerritoire;}
+	public Integer getNbParcelle() {return this.nbParcelle;}
+	public String getCouleur1() {return this.couleur1;}
+	public String getCouleur2() {return this.couleur2;}
+	public String getCouleur3() {return this.couleur3;}
+	public int getNbPV() {return this.nbPV;}
+
 	@Override
 	public String toString() {
 		return this.objectifCarte + " " + this.nbPV + " PV";
