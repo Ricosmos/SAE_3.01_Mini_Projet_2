@@ -39,7 +39,7 @@ public class Objectif
 				{
 					if (this.couleur2 != null)
 					{
-						this.objectifCarte += couleur1 + " à côté de couleur2";
+						this.objectifCarte += couleur1 + " à côté d'un " + couleur2;
 					}
 					else
 					{

@@ -13,6 +13,7 @@ public class Metier
 	private Joueur joueur1, joueur2;
 	private ArrayList<Territoire> tabTerritoires;
 	private HashMap<String, Integer> tabJetons;
+	private ArrayList<Objectif> tabCartesObjectif;
 
 
 	public Metier(String nomJoueur1, String nomJoueur2) 
@@ -21,6 +22,10 @@ public class Metier
 		this.joueur2 = new Joueur(nomJoueur2, Color.MAGENTA);
 		this.tabTerritoires = this.lireCoordonees("Splendor/metier/coordonnees.txt");
 		this.tabJetons = this.creerJeton();
+		this.tabCartesObjectif = this.creerCartesObjectif();
+		for (Objectif objectif : tabCartesObjectif) {
+			System.out.println(objectif);
+		}
 	}
 
 	public Joueur getJoueur1() {return this.joueur1;}
@@ -86,6 +91,50 @@ public class Metier
 
 		return hmJetonConcession;
 	}
+
+	/*
+	 * Creer toutes les cartes "Objectif de marché" selon les règles du Splendor
+	 * @return Une ArrayList avec toutes les cartes "Objectif de marché"
+	 */
+	private ArrayList<Objectif> creerCartesObjectif()
+	{
+		String[] tabCouleurs = {"Blanc", "Bleu", "Vert", "Jaune", "Orange", "Rose", "Rouge", "Noir"};
+		ArrayList<Objectif> tabCartesObjectif = new ArrayList<Objectif>();
+
+		/*Posséder 5 Territoires de 4 parcelles*/
+		tabCartesObjectif.add(new Objectif(1, 5, 4, null, null, null, 10));
+		
+		/*Posséder 5 Territoires couleur*/
+		for (String couleur : tabCouleurs) 
+		{
+			tabCartesObjectif.add(new Objectif(1, 5, null, couleur, null, null, 6));
+		}
+
+		/*Posséder x Territoires couleur1 à côté d'un couleur2*/
+		tabCartesObjectif.add(new Objectif(1, 3, null, "Bleu" , "Blanc", null, 4));
+		tabCartesObjectif.add(new Objectif(1, 4, null, "Vert" , "Bleu" , null, 4));
+		tabCartesObjectif.add(new Objectif(1, 5, null, "Rouge", "Rose" , null, 4));
+
+		/*Posséder le même nombre de territoires couleur1, couleur2 et couleur3*/
+		tabCartesObjectif.add(new Objectif(2, null, null, "Bleu"  , "Blanc", "Rouge", 8));
+		tabCartesObjectif.add(new Objectif(2, null, null, "Noir"  , "Jaune", "Rouge", 8));
+		tabCartesObjectif.add(new Objectif(2, null, null, "Orange", "Blanc", "Vert" , 8));
+		
+		/*Etre majoritaire sur les couleur1*/
+		for (String couleur : tabCouleurs)
+		{
+			tabCartesObjectif.add(new Objectif(3, null, null, couleur, null, null, 3));
+		}
+
+		/*Posséder aucun territoire couleur1*/
+		for (String couleur : tabCouleurs)
+		{
+			tabCartesObjectif.add(new Objectif(4, null, null, couleur, null, null, 3));
+		}
+
+		return tabCartesObjectif;
+	}
+
 
 	/*
 	 * Fonction permettant de faire la correspondance entre les couleurs ecrit en chaine de caractere et les couleurs de la classe Color
