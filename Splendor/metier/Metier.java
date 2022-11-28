@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Map;
 import java.awt.Color;
 import java.awt.Point;
 
@@ -13,8 +13,8 @@ public class Metier
 	private Joueur joueur1, joueur2;
 	private ArrayList<Territoire> tabTerritoires;
 	private HashMap<String, Integer> tabJetons;
+	private ArrayList<String> tabPiocheVisible;
 	private ArrayList<Objectif> tabCartesObjectif;
-
 
 	public Metier(String nomJoueur1, String nomJoueur2) 
 	{
@@ -22,17 +22,33 @@ public class Metier
 		this.joueur2 = new Joueur(nomJoueur2, Color.MAGENTA);
 		this.tabTerritoires = this.lireCoordonees("Splendor/metier/coordonnees.txt");
 		this.tabJetons = this.creerJeton();
+		this.tabPiocheVisible = this.creerPiocheJetons();
 		this.tabCartesObjectif = this.creerCartesObjectif();
 	}
+
+	/* ===================================================================
+	 * A SUPPRIMER, PERMET DE VOIR TOUT LES JETONS QUI SONT DANS TABJETONS
+	 */
+	private void visuTabJeton()
+	{
+		for(Map.Entry<String, Integer> entry : this.tabJetons.entrySet()) 
+		{
+			String key = entry.getKey();
+			Integer value = entry.getValue();
+		
+			System.out.println(String.format("%6s : %1d", key, value));
+		}
+	}
+	// ===================================================================
 
 	public Joueur getJoueur1() {return this.joueur1;}
 	public Joueur getJoueur2() {return this.joueur2;}
 	public ArrayList<Territoire> getTabTerritoires() {return this.tabTerritoires;}
 	public HashMap<String,Integer> getTabJetons() {return this.tabJetons;}
+	public ArrayList<String> getTabPiocheVisible() {return this.tabPiocheVisible;}
 	public ArrayList<Objectif> getTabCartesObjectif() {return this.tabCartesObjectif;}
 
-	public void addJeton(String couleurJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) + 1);}
-	public void removeJeton(String couleurJeton, int nombreJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) - nombreJeton);}
+	public void retirerJeton(String couleurJeton, int nombreJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) - nombreJeton);}
 
 	/*
 	 * Fonction permettant de lire le fichier fournis en argument et d'en extraire tout les territoires
@@ -133,6 +149,25 @@ public class Metier
 		return tabCartesObjectif;
 	}
 
+	/*
+	 * Creer la pioche visible au joueur
+	 * @return Le tableau contenant les 5 jetons visibles
+	 */
+	private ArrayList<String> creerPiocheJetons()
+	{
+		ArrayList<String> tabPiocheVisible = new ArrayList<String>();
+
+		for(int i = 0; i < 5; i++) 
+		{
+			int random = (int)(Math.random() * 9);
+			String jeton = this.tabJetons.keySet().toArray()[random].toString();
+			tabPiocheVisible.add(jeton);
+			this.retirerJeton(jeton, 1);
+		}
+		tabPiocheVisible.add("Pioche");
+
+		return tabPiocheVisible;
+	}
 
 	/*
 	 * Fonction permettant de faire la correspondance entre les couleurs ecrit en chaine de caractere et les couleurs de la classe Color
@@ -179,65 +214,97 @@ public class Metier
 		return true;
 	}
 
-	public void prendreJeton(Joueur actu) {
+	private String piocheJeton()
+	{
+		int random = (int)(Math.random() * 9);
+		String pioche = this.tabJetons.keySet().toArray()[random].toString();
 
-		//Genere les 5 jetons aleatoirement
-		ArrayList<String> jetons = new ArrayList<String>();
-		for(int i = 0; i < 5; i++) {
-			int random = (int)(Math.random() * 9);
-			jetons.add(this.tabJetons.keySet().toArray()[random].toString());
-		}
-		jetons.add("Pioche");
+		return pioche;
+	}
+
+	public void prendreJeton(Joueur joueur) 
+	{
 
 		//J'essaie de faire une boulce qui s'arrete quand il a pris 2 jetons (mais il faut toute les eventualites avec la pioche)
 		//en dessous, la version simpliste qui ne prend pas en compte la pioche
 
-		/*int nbJetonRecup = 0;
-		while(nbJetonRecup < 2) {
+		// Cas des jetons multi-concession visible a gerer 
+
+		int nbJetonRecup = 0;
+		while(nbJetonRecup < 2) 
+		{
 			//Affiche les jetons
 			System.out.println("Jetons :");
-			for(int i = 0; i < jetons.size()-1; i++) {
-				System.out.println( "| " + jetons.get(i) + " |");
+			for(int i = 0; i < this.tabPiocheVisible.size(); i++) 
+			{
+				System.out.println(String.format("|%1d - %-6s |", i + 1, this.tabPiocheVisible.get(i)));
 			}
 
 			//Choix du joueur
-			System.out.println("Choisissez un jeton :");
+			System.out.print("Choisissez un jeton : ");
 			Scanner sc = new Scanner(System.in);
 
 			int choix = sc.nextInt();
-			while(choix < 1 || choix > 6) {
-				System.out.println("Choix invalide, veuillez recommencer :");
+			while(choix < 1 || choix > 6) 
+			{	
+				System.out.print("Choix invalide, veuillez recommencer : ");
 				choix = sc.nextInt();
 			}
 
 			//Si le joueur a choisi la pioche
-			String couleur = "";
-			if(choix == 6) {
-				ArrayList<String> pioche = new ArrayList<String>();
-				for(int i = 0; i < 2-nbJetonRecup; i++) {
+			String jetonChoisie = "";
+			if(choix == 6) 
+			{
+				/*ArrayList<String> pioche = new ArrayList<String>();
+
+			
+				for(int i = 0; i < 2-nbJetonRecup; i++) // Pourquoi une boucle ? 
+				{
 					int random = (int)(Math.random() * 9);
 					pioche.add(this.tabJetons.keySet().toArray()[random].toString());
 				}
+
 				System.out.println("Jetons piochés :");
-				for(int i = 0; i < pioche.size(); i++) {
+
+				for(int i = 0; i < pioche.size(); i++) 
+				{
 					System.out.println( "| " + pioche.get(i) + " |");
 				}
+
 				System.out.println("Choisissez un jeton :");
 				choix = sc.nextInt();
-				switch(nbJetonRecup) {
+				switch(nbJetonRecup) 
+				{
 					case 0
-				}
-			else {
-				couleur = jetons.get(choix - 1);
-				jetons.remove(choix - 1);
-				System.out.println("Vous avez choisi le jeton " + couleur);
-			}
-		}*/
+				} */
 
+				String pioche = this.piocheJeton();
+				joueur.incrementerJeton(pioche, 1);
+				this.retirerJeton(pioche, 1);
+				System.out.println("Jetons piochés : " + pioche);
+			}
+			else 
+			{
+				jetonChoisie = this.tabPiocheVisible.get(choix - 1);
+				this.tabPiocheVisible.remove(choix - 1);
+				joueur.incrementerJeton(jetonChoisie, 1);
+				System.out.println("Vous avez choisi le jeton " + jetonChoisie);
+
+				this.tabPiocheVisible.remove(4); // retire la pioche pour pas quelle descente dans l'ArrayList
+
+				String pioche = this.piocheJeton();
+				this.tabPiocheVisible.add(pioche);
+				this.retirerJeton(pioche, 1);
+
+				tabPiocheVisible.add("Pioche"); // On remet la pioche qui sera de nouveau dernier
+			}
+			nbJetonRecup++;
+		}
+/* 
 		//Affiche les jetons
 		System.out.println("Jetons :");
-		for(int i = 0; i < jetons.size()-1; i++) {
-			System.out.println( "| " + jetons.get(i) + " |");
+		for(int i = 0; i < this.tabPiocheVisible.size()-1; i++) {
+			System.out.println( "| " + this.tabPiocheVisible.get(i) + " |");
 		}
 
 		//Choix du joueur
@@ -250,13 +317,12 @@ public class Metier
 			choix = sc.nextInt();
 		}
 
-		String couleur = jetons.get(choix - 1);
-		jetons.remove(choix - 1);
+		String couleur = this.tabPiocheVisible.get(choix - 1);
+		this.tabPiocheVisible.remove(choix - 1);
 		System.out.println("Vous avez choisi le jeton " + couleur);
-		
-
-
+		 
 		//Ajout du jeton au joueur
-		actu.incrementerJeton(couleur, 1);
+		joueur.incrementerJeton(couleur, 1);
+		*/
 	}
 }

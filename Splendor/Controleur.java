@@ -28,25 +28,31 @@ public class Controleur
 	
 				System.out.println("Au tour de " + actu.getNomJoueur() + " de jouer");
 	
-				switch(choixAction()) {
-					case 1 -> {
+				switch(choixAction()) 
+				{
+					case 1 -> 
+					{
 						// Prendre jeton
 						this.metier.prendreJeton(actu);
-						System.out.println("Vos jetons :");
-						for (String key : actu.getTabJeton().keySet()) {
-							System.out.println("| " + key + " : " + actu.getTabJeton().get(key) + " |");
+						System.out.println("Vos jetons : ");
+						for (String key : actu.getTabJeton().keySet()) 
+						{
+							System.out.println(String.format("| %-6s : %1d |", key, actu.getTabJeton().get(key)));
 						}
 					}
-					case 2 -> {
+					case 2 -> 
+					{
 						// Acheter territoire
 	
 					}
-					case 3 -> {
+					case 3 -> 
+					{
 						// Prendre Carte Objectif
 						
 					}
 				}
 	
+				System.out.println();
 				this.metier.getJoueur1().changerTours(); // Alternation des tours des deux joueurs
 				this.metier.getJoueur2().changerTours();
 			}
@@ -55,7 +61,7 @@ public class Controleur
 	private int choixAction()
 	{
 		System.out.println("1 - Prendre des jetons concession");
-		System.out.println("2 - Prendre possession d’un territoire");
+		System.out.println("2 - Prendre possession d'un territoire");
 		System.out.println("3 - Prendre des cartes objectif ");
 		System.out.print  ("Choisissez une action : ");
 		Scanner sc = new Scanner(System.in);
