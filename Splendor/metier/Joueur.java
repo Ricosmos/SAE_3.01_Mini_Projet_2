@@ -9,7 +9,7 @@ public class Joueur
 	private Color couleur;
 	private boolean tours;
 	private int marqPosse;
-	private HashMap<String, Integer> tabJeton;
+	private HashMap<String, Integer> tabJetons;
 	private int pv;
 
 	public Joueur(String nomJoueur, Color couleur)
@@ -18,7 +18,7 @@ public class Joueur
 		this.couleur = couleur;
 		this.tours = false;
 		this.marqPosse = 40;
-		this.tabJeton = this.creerJeton();
+		this.tabJetons = this.creerJeton();
 		this.pv = 0;
 	}
 
@@ -27,11 +27,13 @@ public class Joueur
 	public boolean getTours() {return this.tours;}
 	public boolean isTours() {return this.tours;}
 	public int getMarqPosse() {return this.marqPosse;}
-	public HashMap<String, Integer> getTabJeton() {return this.tabJeton;}
+	public HashMap<String, Integer> getTabJeton() {return this.tabJetons;}
 	public int getPv() {return this.pv;}
 
 	public void addPv(int pv) {this.pv += pv;}
 	public void changerTours() {this.tours = !this.tours;}
+	public void addJeton(String couleurJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) + 1);}
+	public void removeJeton(String couleurJeton, int nombreJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) - nombreJeton);}
 
 	/*
 	 * Prepare le joueur a recevoir les jetons concessions

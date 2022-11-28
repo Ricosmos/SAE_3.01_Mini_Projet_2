@@ -28,6 +28,9 @@ public class Metier
 	public ArrayList<Territoire> getTabTerritoires() {return this.tabTerritoires;}
 	public HashMap<String,Integer> getTabJetons() {return this.tabJetons;}
 
+	public void addJeton(String couleurJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) + 1);}
+	public void removeJeton(String couleurJeton, int nombreJeton) {this.tabJetons.put(couleurJeton, this.tabJetons.get(couleurJeton) - nombreJeton);}
+
 	/*
 	 * Fonction permettant de lire le fichier fournis en argument et d'en extraire tout les territoires
 	 * @param Le chemin menant vers le fichier .txt qui contient les donnees de tout les territoires
