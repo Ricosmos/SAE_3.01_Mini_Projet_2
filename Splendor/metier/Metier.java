@@ -235,9 +235,19 @@ public class Metier
 		//J'essaie de faire une boulce qui s'arrete quand il a pris 2 jetons (mais il faut toute les eventualites avec la pioche)
 		//en dessous, la version simpliste qui ne prend pas en compte la pioche
 
-		// Cas des jetons multi-concession visible a gerer 
+		// Cas du jeton multi-concess pioche et impossible a un joueur a prendre a gerer
 
 		int nbJetonRecup = 0;
+
+		for (String jeton : this.tabPiocheVisible)
+		{
+			if (jeton == "Multi")
+			{
+				nbJetonRecup = 1;
+				break;
+			}
+		}
+
 		while(nbJetonRecup < 2) 
 		{
 			//Affiche les jetons
@@ -349,17 +359,26 @@ public class Metier
 			Territoire territoire = this.tabTerritoires.get(choix - 1);
 	
 			int  tailleTerritoire = Integer.parseInt(territoire.getTaille().replaceAll("\\D", ""));
-			String couleurTerritoire = territoire.getNomCouleur().substring(0, 1) + territoire.getNomCouleur().substring(1).toLowerCase().replaceAll("\\s", ""); // Couleur en caps -> Laisser que la premiere maj
+			String couleurTerritoire = territoire.getNomCouleur().substring(0, 1) + // Couleur en caps -> Laisser que la premiere maj
+										territoire.getNomCouleur().substring(1).toLowerCase().replaceAll("\\s", ""); // Reste en lower case
 			
-			if (joueur.getTabJetons().get(couleurTerritoire) == tailleTerritoire && territoire.getPosseder() == null)
+			if (territoire.getPosseder() != null)
+			{
+				System.out.println("Ce territoire est déjà possédé");
+			}
+			else if (joueur.getTabJetons().get(couleurTerritoire) >= tailleTerritoire)
 			{
 				joueur.decrementerJeton(couleurTerritoire, tailleTerritoire);
 				territoire.possederTerritoire(joueur);
 				return true;
 			}
-			else if (territoire.getPosseder() != null)
+			else if (joueur.getTabJetons().get(couleurTerritoire) + joueur.getTabJetons().get("Multi") >= tailleTerritoire)
 			{
-				System.out.println("Ce territoire est déjà possédé");
+				int temp = joueur.getTabJetons().get("Multi");
+				joueur.decrementerJeton("Multi", tailleTerritoire - joueur.getTabJetons().get(couleurTerritoire));
+				joueur.decrementerJeton(couleurTerritoire, joueur.getTabJetons().get(couleurTerritoire));
+				territoire.possederTerritoire(joueur);
+				return true;
 			}
 			else
 			{
