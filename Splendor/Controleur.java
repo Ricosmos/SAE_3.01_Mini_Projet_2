@@ -56,6 +56,9 @@ public class Controleur
 			}
 	}
 
+	public Joueur getJoueur1() {return this.metier.getJoueur1();}
+	public Joueur getJoueur2() {return this.metier.getJoueur2();}
+
 	private void afficherJetonsJoueur(Joueur joueur) 
 	{
 		for (String key : joueur.getTabJetons().keySet()) 

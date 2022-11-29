@@ -9,6 +9,7 @@ public class FramePrincipale extends JFrame
 {
 	private Controleur ctrl;
 	private PanelCarte panelCarte;
+	private PanelInfos panelInfos;
 
 	public FramePrincipale (Controleur ctrl)
 	{
@@ -19,8 +20,10 @@ public class FramePrincipale extends JFrame
 
 		JPanel panelMain = new JPanel(new BorderLayout()); // Regroupe les panels
 		this.panelCarte = new PanelCarte(this.ctrl);
+		this.panelInfos = new PanelInfos(this.ctrl);
 
 		panelMain.add(this.panelCarte, BorderLayout.CENTER);
+		panelMain.add(this.panelInfos, BorderLayout.EAST);
 		this.add(panelMain);
 		
 		this.setVisible(true);
@@ -28,5 +31,9 @@ public class FramePrincipale extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	public void majIHM() {this.panelCarte.majIHM();}	
+	public void majIHM() 
+	{
+		this.panelCarte.majIHM();
+		this.panelInfos.majIHM();
+	}	
 }
