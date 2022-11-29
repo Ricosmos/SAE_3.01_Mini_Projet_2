@@ -24,6 +24,9 @@ public class Metier
 		this.tabJetons = this.creerJeton();
 		this.tabPiocheVisible = this.creerPiocheJetons();
 		this.tabCartesObjectif = this.creerCartesObjectif();
+
+		this.initialiseTabJetonsJoueur(joueur1);
+		this.initialiseTabJetonsJoueur(joueur2);
 	}
 
 	/* ===================================================================
@@ -76,7 +79,7 @@ public class Metier
 											Integer.parseInt(pointDec[cpt].substring(0, 2).replaceAll("\\s","")))); // partie x du tuple et on retire les espaces
 				}
 
-				tabTerritoire.add(new Territoire(this.correspondanceCouleur(ligneDec[0]), ligneDec[1], tabPoint));
+				tabTerritoire.add(new Territoire(this.correspondanceCouleur(ligneDec[0]), ligneDec[0], ligneDec[1], tabPoint));
 			}
 			sc.close();
 		}
@@ -170,6 +173,19 @@ public class Metier
 	}
 
 	/*
+	 * Initialise les 4 jetons de départ du joueur
+	 * @param Le joueur a initialise c'est jetons
+	 */
+	private void initialiseTabJetonsJoueur(Joueur joueur)
+	{
+		for (int cpt = 0; cpt < 4; cpt++)
+		{
+			joueur.incrementerJeton(this.piocheJeton());
+		}
+	}
+
+
+	/*
 	 * Fonction permettant de faire la correspondance entre les couleurs ecrit en chaine de caractere et les couleurs de la classe Color
 	 * @param La couleur qu'on souhaite avoir sa correspondance
 	 * @return La correspondance de la couleur fournie dans la classe Color
@@ -203,15 +219,6 @@ public class Metier
 			return this.joueur1;
 		else
 			return this.joueur2;
-	}
-	
-	private boolean possessionTerritoire(Joueur joueur, Territoire territoire) 
-	{
-		if (joueur.getTabJetons().get(territoire.getCouleur()) < Integer.parseInt(territoire.getTaille().replaceAll("\\D", "")))
-			return false;
-
-		territoire.possederTerritoire(joueur);
-		return true;
 	}
 
 	private String piocheJeton()
@@ -279,7 +286,7 @@ public class Metier
 				} */
 
 				String pioche = this.piocheJeton();
-				joueur.incrementerJeton(pioche, 1);
+				joueur.incrementerJeton(pioche);
 				this.retirerJeton(pioche, 1);
 				System.out.println("Jetons piochés : " + pioche);
 			}
@@ -287,7 +294,7 @@ public class Metier
 			{
 				jetonChoisie = this.tabPiocheVisible.get(choix - 1);
 				this.tabPiocheVisible.remove(choix - 1);
-				joueur.incrementerJeton(jetonChoisie, 1);
+				joueur.incrementerJeton(jetonChoisie);
 				System.out.println("Vous avez choisi le jeton " + jetonChoisie);
 
 				this.tabPiocheVisible.remove(4); // retire la pioche pour pas quelle descente dans l'ArrayList
@@ -324,5 +331,55 @@ public class Metier
 		//Ajout du jeton au joueur
 		joueur.incrementerJeton(couleur, 1);
 		*/
+	}
+
+
+	public boolean prendreTerritoire(Joueur joueur) 
+	{
+		this.afficherTerritoireLibre();
+		Scanner sc = new Scanner(System.in);
+		while (true)
+		{
+			System.out.print("Choisissez un territoire : ");
+			int choix = sc.nextInt();
+			while(choix < 1 || choix > this.tabTerritoires.size()) {
+				System.out.print("Choix invalide, veuillez recommencer :");
+				choix = sc.nextInt();
+			}
+			Territoire territoire = this.tabTerritoires.get(choix - 1);
+	
+			int  tailleTerritoire = Integer.parseInt(territoire.getTaille().replaceAll("\\D", ""));
+			String couleurTerritoire = territoire.getNomCouleur().substring(0, 1) + territoire.getNomCouleur().substring(1).toLowerCase().replaceAll("\\s", ""); // Couleur en caps -> Laisser que la premiere maj
+			
+			if (joueur.getTabJetons().get(couleurTerritoire) == tailleTerritoire && territoire.getPosseder() == null)
+			{
+				joueur.decrementerJeton(couleurTerritoire, tailleTerritoire);
+				territoire.possederTerritoire(joueur);
+				return true;
+			}
+			else if (territoire.getPosseder() != null)
+			{
+				System.out.println("Ce territoire est déjà possédé");
+			}
+			else
+			{
+				System.out.println(String.format("Vous n'avez pas assez de jeton pour posséder le territoire %-6s %-2s", territoire.getNomCouleur(), territoire.getTaille()));
+				System.out.println(joueur.getTabJetons().get(couleurTerritoire) + " " + tailleTerritoire);
+				return false;
+			}
+		}
+	}
+
+	private void afficherTerritoireLibre() 
+	{
+		int cpt = 1;
+		for (Territoire territoire : this.tabTerritoires)
+		{
+			if (territoire.getPosseder() == null)
+			{
+				System.out.println(String.format("| %2d - %-6s %-2s", cpt, territoire.getNomCouleur(), territoire.getTaille()));
+			}			
+			cpt++;		
+		}
 	}
 }

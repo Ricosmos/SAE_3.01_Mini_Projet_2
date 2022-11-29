@@ -24,25 +24,21 @@ public class Controleur
 			while (true)
 			{
 	
-				Joueur actu = this.metier.getCurrentJoueur();
+				Joueur joueur = this.metier.getCurrentJoueur();
 	
-				System.out.println("Au tour de " + actu.getNomJoueur() + " de jouer");
-	
+				System.out.println("Au tour de " + joueur.getNomJoueur() + " de jouer");
+				this.afficherJetonsJoueur(joueur);
+
 				switch(choixAction()) 
 				{
 					case 1 -> 
 					{
-						// Prendre jeton
-						this.metier.prendreJeton(actu);
+						this.metier.prendreJeton(joueur);
 						System.out.println("Vos jetons : ");
-						for (String key : actu.getTabJeton().keySet()) 
-						{
-							System.out.println(String.format("| %-6s : %1d |", key, actu.getTabJeton().get(key)));
-						}
 					}
 					case 2 -> 
 					{
-						// Acheter territoire
+						this.metier.prendreTerritoire(joueur);
 	
 					}
 					case 3 -> 
@@ -51,11 +47,21 @@ public class Controleur
 						
 					}
 				}
-	
+
+				this.afficherJetonsJoueur(joueur);
 				System.out.println();
+				this.ihm.majIHM();
 				this.metier.getJoueur1().changerTours(); // Alternation des tours des deux joueurs
 				this.metier.getJoueur2().changerTours();
 			}
+	}
+
+	private void afficherJetonsJoueur(Joueur joueur) 
+	{
+		for (String key : joueur.getTabJetons().keySet()) 
+		{
+			System.out.println(String.format("| %-6s : %2d |", key, joueur.getTabJetons().get(key)));
+		}
 	}
 
 	private int choixAction()

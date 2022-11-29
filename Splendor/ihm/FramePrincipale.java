@@ -27,4 +27,6 @@ public class FramePrincipale extends JFrame
 		this.pack();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+
+	public void majIHM() {this.panelCarte.majIHM();}	
 }

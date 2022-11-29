@@ -30,30 +30,23 @@ public class Joueur
 	public boolean getTours() {return this.tours;}
 	public boolean isTours() {return this.tours;}
 	public int getMarqPosse() {return this.marqPosse;}
-	public HashMap<String, Integer> getTabJetons() {return this.tabJetons;}
-	public ArrayList<Objectif> getTabCartesObjectif() {return this.tabCartesObjectif;}
 	public int getPv() {return this.pv;}
 
 	public void addPv(int pv) {this.pv += pv;}
 	public void changerTours() {this.tours = !this.tours;}
 
 	// Methode get qui renvoie le tableau de jetons (non modifiable)
-	public HashMap<String, Integer> getTabJeton() {
+	public HashMap<String, Integer> getTabJetons() {
 		HashMap<String, Integer> copieTabJeton = new HashMap<String, Integer>();
 		this.tabJetons.forEach((k, v) -> copieTabJeton.put(k, v));
 		return copieTabJeton;
 	}
 
 	// Methode set qui modifie le tableau de jetons pour ajouter un jeton
-	public void incrementerJeton (String couleur, int nbJeton) {
-		this.tabJetons.put(couleur, this.tabJetons.get(couleur) + 1);
-	}
+	public void incrementerJeton (String couleur) {this.tabJetons.put(couleur, this.tabJetons.get(couleur) + 1);}
 
 	// Methode set qui modifie le tableau de jetons pour retirer un jeton
-	public void decrementerJeton (String couleur, int nbJeton) {
-		this.tabJetons.put(couleur, this.tabJetons.get(couleur) - 1);
-	}
-
+	public void decrementerJeton (String couleur, int nbJeton) {this.tabJetons.put(couleur, this.tabJetons.get(couleur) - nbJeton);}
 
 	/*
 	 * Prepare le joueur a recevoir les jetons concessions
@@ -84,8 +77,8 @@ public class Joueur
 			", couleur='" + getCouleur() + "'" +
 			", tours='" + isTours() + "'" +
 			", marqPosse='" + getMarqPosse() + "'" +
-			", tabJetons='" + getTabJetons() + "'" +
-			", tabCartesObjectif='" + getTabCartesObjectif() + "'" +
+			", tabJetons='" + this.tabJetons + "'" +
+			", tabCartesObjectif='" + this.tabCartesObjectif + "'" +
 			", pv='" + getPv() + "'" +
 			"}";
 	}

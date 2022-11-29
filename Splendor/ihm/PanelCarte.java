@@ -17,7 +17,7 @@ public class PanelCarte extends JPanel
 		this.ctrl = ctrl;
 		this.tabTerritoires = this.ctrl.getTerritoire();
 		
-		this.setPreferredSize(new Dimension(2000, 1500));
+		this.setPreferredSize(new Dimension(1400, 1000));
 		this.setBackground(Color.WHITE);
 	}
 
