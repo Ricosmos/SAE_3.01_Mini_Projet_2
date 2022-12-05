@@ -25,6 +25,8 @@ public class PanelInfos extends JPanel
 		this.tableJoueur1 = new JTable(new GrilleDonneesModel(ctrl, this.ctrl.getJoueur1()));
 		this.tableJoueur2 = new JTable(new GrilleDonneesModel(ctrl, this.ctrl.getJoueur2()));
 
+		this.tableJoueur1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		this.tableJoueur2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		spTabJoueur1 = new JScrollPane( this.tableJoueur1 );
 		spTabJoueur2 = new JScrollPane( this.tableJoueur2 );
